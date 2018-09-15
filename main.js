@@ -141,7 +141,7 @@ function getUser(userId) {
   ).then(res => {
     res.json().then(res => {
       console.log('get user res:', res);
-      // usernameEl.innerText = res;
+      usernameEl.innerText = res.user.name;
     }).catch(err => {
       console.error(err);
       notify.error(err);
