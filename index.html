@@ -8,25 +8,27 @@
   <script type="module" src="main.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="splash"> <!-- "splash"-class is removed in init() -->
 
-  <div id="notify">
-  </div>
-
-  <div id="form" class="form">
-    <div class="label-container">
-      <img class="logo" src="images/clock-128.png" alt="logo">
-      <h3 class="app-name">Hub my Time</h3>
+  <div class="root">
+    <div id="notify">
     </div>
-    <input type="text" required name="email" id="email-inp"
-    class="field" placeholder="email">
-    <input type="password" required name="password" id="pass-inp"
-    class="field" placeholder="password">
-    <input type="submit" value="Submit" id="submit-btn" class="button">
-  </div>
 
-  <div id="content">
-    <h3>content here</h3>
+    <div id="form" class="form">
+      <div class="label-container">
+        <img class="logo" src="images/clock-128.png" alt="logo">
+        <h3 class="app-name">Hub my Time</h3>
+      </div>
+      <input type="text" required name="email" id="email-inp"
+      class="field" placeholder="Email">
+      <input type="password" required name="password" id="pass-inp"
+      class="field" placeholder="Password">
+      <input type="submit" value="Submit" id="submit-btn" class="button">
+    </div>
+
+    <div id="content">
+      <h2 id="username"></h2>
+    </div>
   </div>
 
   <!-- <button id="get-h-btn">Get todays hours</button> -->

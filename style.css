@@ -3,10 +3,20 @@
   marging: 0;
   box-sizing: border-box;
 }
+html, body {
+  height: 100%;
+}
 
 body {
   background-color: #19bc9b;
   color: #fefefe;
+}
+body.splash {
+  background: url('images/clock-128.png') no-repeat center;
+  background-color: #19bc9b;
+}
+body.splash .root {
+  display: none;
 }
 
 #notify {

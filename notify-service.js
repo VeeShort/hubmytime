@@ -11,7 +11,7 @@ export default class Notify {
     this.timeout = timeout;
     this.defaults = {
       delay: 3000,
-      text: ''
+      text: 'Something went wrong'
     };
     this.options = {
       delay: this.defaults.delay
@@ -38,7 +38,7 @@ export default class Notify {
   showNotify(className, text) {
     if (this.notifyEl) {
       clearTimeout(this.timeout);
-      this.notifyEl.innerText = text ? text.trim() : this.defaults.text;
+      this.notifyEl.innerText = typeof text === 'string' ? text.trim() : this.defaults.text;
       this.notifyEl.classList.add('visible', className);
       this.timeout = setTimeout(() => {
         this.notifyEl.classList.remove('visible', className);

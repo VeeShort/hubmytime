@@ -1,7 +1,7 @@
 'use strict';
 import Notify from './notify-service.js';
 
-let formEl, emailEl, passwordEl, contentEl;
+let formEl, emailEl, passwordEl, contentEl, usernameEl;
 
 let authToken = '';
 const appToken = 'R0cDtib8jxQmdZ2J87kqR7qYP3XCRkh6XZ7MM3V219Y';
@@ -12,7 +12,8 @@ const rest = {
     auth: `${api}/auth`,
   },
   get: {
-    customByDateMy: `${api}/custom/by_date/my`
+    customByDateMy: `${api}/custom/by_date/my`,
+    users: `${api}/users`
   }
 };
 
@@ -31,18 +32,18 @@ function init() {
   emailEl = document.querySelector('#email-inp');
   passwordEl = document.querySelector('#pass-inp');
   contentEl = document.querySelector('#content');
+  usernameEl = document.querySelector('#username');
+
   document.querySelector('#submit-btn').addEventListener('click', submitLoginForm);
 
   checkToken();
-  // document.querySelector('#get-h-btn').addEventListener('click', getTodaysHours);
 }
 
 function handle401Error(res) {
   return new Promise((resolve, reject) => {
-    if (res.error === 'Invalid auth_token') {
-      chrome.storage.local.set({auth_token: null});
+    if (res.status !== 200) {
       displayLoginForm(true);
-      reject();
+      reject(res.statusText);
     } else if (!res.error) resolve();
   });
 }
@@ -62,13 +63,16 @@ function sendAuthRequest(email, pass) {
     }).then(res => {
       handle401Error(res).then(ok => {
         res.json().then(res => {
-          authToken = res.user.auth_token;
-          chrome.storage.local.set({
-            auth_token: authToken,
-            email: email,
-            password: pass
-          });
-          resolve('ok');
+          if (res.user && res.user.auth_token) {
+            authToken = res.user.auth_token;
+            chrome.storage.local.set({
+              auth_token: authToken,
+              email: email,
+              password: pass
+            });
+            getUser(res.user.id);
+            resolve('ok');
+          } else reject('Server returned no user or auth_token');
         }).catch(err => reject(err));
       }).catch(err => reject(err));
     }).catch(err => reject(err));
@@ -96,15 +100,18 @@ function checkToken() {
       authToken = res.auth_token;
       if (res.email && res.password) {
         sendAuthRequest(res.email, res.password).then(ok => {
+          document.body.classList.remove('splash');
           notify.success('Signed in successfully');
           displayLoginForm(false);
         }).catch(err => {
+          document.body.classList.remove('splash');
           console.error(err);
           notify.error(err);
           displayLoginForm(true);
         });
       }
     } else {
+      document.body.classList.remove('splash');
       displayLoginForm(true);
     }
   });
@@ -116,6 +123,29 @@ function submitLoginForm() {
 
   sendAuthRequest(email, pass).then(ok => {
     notify.success('Signed in successfully');
+  }).catch(err => {
+    console.error(err);
+    notify.error(err);
+  });
+}
+
+function getUser(userId) {
+  fetch(
+    `${res.get.users}/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Auth-Token': authToken,
+        'App-Token': appToken
+      }
+    }
+  ).then(res => {
+    res.json().then(res => {
+      console.log('get user res:', res);
+      // usernameEl.innerText = res;
+    }).catch(err => {
+      console.error(err);
+      notify.error(err);
+    });
   }).catch(err => {
     console.error(err);
     notify.error(err);
