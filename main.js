@@ -62,6 +62,7 @@ function sendAuthRequest(email, pass) {
       body: formData
     }).then(res => {
       handle401Error(res).then(ok => {
+        console.log('res:', res);
         res.json().then(res => {
           if (res.user && res.user.auth_token) {
             authToken = res.user.auth_token;
@@ -130,6 +131,7 @@ function submitLoginForm() {
 }
 
 function getUser(userId) {
+  console.log('getUser:', userId);
   fetch(
     `${res.get.users}/${userId}`, {
       method: 'GET',
@@ -139,8 +141,9 @@ function getUser(userId) {
       }
     }
   ).then(res => {
+    console.log('get user res:', res);
     res.json().then(res => {
-      console.log('get user res:', res);
+      // console.log('get user res:', res);
       usernameEl.innerText = res.user.name;
     }).catch(err => {
       console.error(err);
