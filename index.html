@@ -5,14 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Hub My Time</title>
+  <script type="module" src="main.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="form">
-    <input type="text" required name="email" id="email-inp">
-    <input type="password" required name="password" id="pass-inp">
-    <input type="submit" value="Submit" id="submit-btn">
+
+  <div id="notify">
   </div>
 
-  <button id="get-h-btn">Get todays hours</button>
+  <div id="form" class="form">
+    <div class="label-container">
+      <img class="logo" src="images/clock-128.png" alt="logo">
+      <h3 class="app-name">Hub my Time</h3>
+    </div>
+    <input type="text" required name="email" id="email-inp"
+    class="field" placeholder="email">
+    <input type="password" required name="password" id="pass-inp"
+    class="field" placeholder="password">
+    <input type="submit" value="Submit" id="submit-btn" class="button">
+  </div>
+
+  <div id="content">
+    <h3>content here</h3>
+  </div>
+
+  <!-- <button id="get-h-btn">Get todays hours</button> -->
 </body>
 </html>

@@ -1,0 +1,100 @@
+* {
+  padding: 0;
+  marging: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #19bc9b;
+  color: #fefefe;
+}
+
+#notify {
+  position: fixed;
+  background-color: #F44336;
+  color: #fefefe;
+  font-size: 16px;
+  font-weight: normal;
+  transition: .3s all;
+  top: -100px;
+  width: 100%;
+  left: 10px;
+  width: calc(100% - 20px);
+  padding: 10px;
+  border-radius: 6px;
+}
+#notify.visible {
+  top: 10px;
+}
+#notify.err {
+  background-color: #F44336;
+  color: #fefefe;
+}
+#notify.success {
+  background-color: #4CAF50;
+  color: #fefefe;
+}
+
+.form {
+  width: 100%;
+  padding: 15px;
+}
+
+.form .label-container {
+  margin: 40px 0;
+}
+
+.label-container .logo {
+  display: block;
+  width: 100px;
+  object-fit: contain;
+  margin: 0 auto;
+  margin-bottom: 15px;
+}
+
+.label-container .app-name {
+  font-size: 26px;
+  color: #fefefe;
+  text-align: center;
+  width: 100%;
+}
+
+.field {
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  background-color: #fefefe;
+  border-radius: 8px;
+  width: 100%;
+  display: block;
+  height: 42px;
+  color: #7f7f7f;
+  font-size: 18px;
+}
+
+.button {
+  width: 100%;
+  display: block;
+  border: none;
+  outline: none;
+  height: 42px;
+  margin-top: 20px;
+  background-color: #14a085;
+  border-radius: 8px;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 18px;
+  transition: .3s all;
+}
+.button:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+
+.form .field {
+  margin-bottom: 15px;
+}
+
+.form .field:last-child {
+  margin-bottom: 0;
+}
