@@ -1,0 +1,15 @@
+{
+    "name": "Hub my Time",
+    "description": "My first Chrome App.",
+    "version": "0.1",
+    "manifest_version": 2,
+    "permissions": [
+      "storage"
+    ],
+    "app": {
+      "background": {
+        "scripts": ["script.js"]
+      }
+    },
+    "icons": { "16": "images/clock-16.png", "128": "images/clock-128.png" }
+  }
