@@ -1,7 +1,7 @@
 'use strict';
 import Notify from './notify-service.js';
 
-let formEl, emailEl, passwordEl, contentEl, usernameEl;
+let formEl, emailEl, passwordEl, contentEl, usernameEl, timeMonthEl;
 
 let authToken = '';
 const appToken = 'R0cDtib8jxQmdZ2J87kqR7qYP3XCRkh6XZ7MM3V219Y';
@@ -33,10 +33,10 @@ function init() {
   passwordEl = document.querySelector('#pass-inp');
   contentEl = document.querySelector('#content');
   usernameEl = document.querySelector('#username');
+  timeMonthEl = document.querySelector('#time-month');
 
   document.querySelector('#submit-btn').addEventListener('click', submitLoginForm);
-
-  checkToken();
+  getUserData();
 }
 
 function handle401Error(res) {
@@ -68,11 +68,10 @@ function sendAuthRequest(email, pass) {
             authToken = res.user.auth_token;
             chrome.storage.local.set({
               auth_token: authToken,
-              email: email,
-              password: pass
+              user_id: res.user.id
             });
             getUser(res.user.id);
-            resolve('ok');
+            resolve();
           } else reject('Server returned no user or auth_token');
         }).catch(err => reject(err));
       }).catch(err => reject(err));
@@ -92,27 +91,19 @@ function displayContent(status) {
     contentEl.style =  status ? 'display: block' : 'display: none';
 }
 
-// FIXME: fix function so it's not sending first time request
-function checkToken() {
+function getUserData() {
+  displayLoginForm(false);
   console.log('checking auth token...');
-  chrome.storage.local.get(['auth_token', 'email', 'password'], (res) => {
+  chrome.storage.local.get(['auth_token', 'user_id'], res => {
     console.log('local.get:', res);
+    document.body.classList.remove('splash');
     if (res.auth_token) {
       authToken = res.auth_token;
-      if (res.email && res.password) {
-        sendAuthRequest(res.email, res.password).then(ok => {
-          document.body.classList.remove('splash');
-          notify.success('Signed in successfully');
-          displayLoginForm(false);
-        }).catch(err => {
-          document.body.classList.remove('splash');
-          console.error(err);
-          notify.error(err);
-          displayLoginForm(true);
-        });
-      }
-    } else {
-      document.body.classList.remove('splash');
+    }
+    if (res.user_id) {
+      getUser(res.user_id);
+    }
+    if (!res || !res.auth_token) {
       displayLoginForm(true);
     }
   });
@@ -122,7 +113,7 @@ function submitLoginForm() {
   let email = emailEl.value.trim();
   let pass = passwordEl.value.trim();
 
-  sendAuthRequest(email, pass).then(ok => {
+  sendAuthRequest(email, pass).then(() => {
     notify.success('Signed in successfully');
   }).catch(err => {
     console.error(err);
@@ -133,7 +124,7 @@ function submitLoginForm() {
 function getUser(userId) {
   console.log('getUser:', userId);
   fetch(
-    `${res.get.users}/${userId}`, {
+    `${rest.get.users}/${userId}`, {
       method: 'GET',
       headers: {
         'Auth-Token': authToken,
@@ -141,10 +132,14 @@ function getUser(userId) {
       }
     }
   ).then(res => {
-    console.log('get user res:', res);
-    res.json().then(res => {
-      // console.log('get user res:', res);
-      usernameEl.innerText = res.user.name;
+    handle401Error(res).then(() => {
+      res.json().then(res => {
+        usernameEl.innerText = res.user.name;
+        getCurrentMonthsHours();
+      }).catch(err => {
+        console.error(err);
+        notify.error(err);
+      });
     }).catch(err => {
       console.error(err);
       notify.error(err);
@@ -155,10 +150,24 @@ function getUser(userId) {
   });
 }
 
-function getTodaysHours() {
+function getCurrentMonthsHours() {
+  const currDate = new Date().getDate();
+  const currMonth = new Date().getMonth() + 1;
+  const currYear = new Date().getFullYear();
+  const payday = 20;
+  let year = currYear;
+  let month = currMonth;
+
+  if (currDate < payday) {
+    month = currMonth > 1 ? currMonth - 1 : 12;
+    year = currMonth == 1 ? currYear - 1 : currYear;
+  } 
+  const startDate = `${year}-${month}-${payday + 1}`;
+  const endDate = `${currYear}-${currMonth}-${currDate}`;
+
   const params = {
-    startDate: `start_date='2018-09-14'`,
-    endDate: `end_date='2018-09-14'`
+    startDate: `start_date=${startDate}`,
+    endDate: `end_date=${endDate}`
   }
   fetch(`${rest.get.customByDateMy}?${params.startDate}&${params.endDate}`, {
     method: 'GET',
@@ -170,7 +179,7 @@ function getTodaysHours() {
     handle401Error(res).then(ok => {
       res.json().then(res => {
         console.log(res);
-        alert(`Today logged: ${(res.organizations[0].duration*0.00027777777777778).toFixed(2)}h`);
+        timeMonthEl.innerText = `${(res.organizations[0].duration*0.00027777777777778).toFixed(2)}h`;
       }).catch(err => {
         console.error(err);
         notify.error(err);

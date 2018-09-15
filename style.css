@@ -1,6 +1,6 @@
 * {
   padding: 0;
-  marging: 0;
+  margin: 0;
   box-sizing: border-box;
 }
 html, body {
@@ -17,6 +17,10 @@ body.splash {
 }
 body.splash .root {
   display: none;
+}
+
+.root {
+  padding: 0 15px;
 }
 
 #notify {
@@ -107,4 +111,28 @@ body.splash .root {
 
 .form .field:last-child {
   margin-bottom: 0;
+}
+
+.content .username {
+  text-align: center;
+  font-size: 16px;
+  font-family: Arial;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #fefefe;
+}
+
+.table .row {
+  font-size: 16px;
+  text-align: center;
+}
+
+.label {
+  text-transform: uppercase;
+}
+
+.value {
+  font-weight: bold;
+  font-size: 46px;
+  text-transform: uppercase;
 }

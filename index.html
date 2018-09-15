@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Hub My Time</title>
+  <script src="moment.js"></script>
   <script type="module" src="main.js"></script>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="progress.css">
 </head>
 <body class="splash"> <!-- "splash"-class is removed in init() -->
 
@@ -26,11 +28,20 @@
       <input type="submit" value="Submit" id="submit-btn" class="button">
     </div>
 
-    <div id="content">
-      <h2 id="username"></h2>
+    <div id="content" class="content">
+      <div id="username" class="username"></div>
+    </div>
+    <div class="table">
+      <div class="row">
+        <div class="label"> This work month</div>
+        <div id="time-month" class="value"></div>
+      </div>
+      <!-- <div class="wrapper" data-anim="base wrapper">
+        <div class="circle" data-anim="base left"></div>
+        <div class="circle" data-anim="base right"></div>
+      </div> -->
     </div>
   </div>
 
-  <!-- <button id="get-h-btn">Get todays hours</button> -->
 </body>
 </html>
