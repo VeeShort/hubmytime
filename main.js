@@ -39,12 +39,13 @@ function init() {
   getUserData();
 }
 
-function handle401Error(res) {
+function handleServerError(err) {
   return new Promise((resolve, reject) => {
-    if (res.status !== 200) {
+    console.warn('err:', err);
+    if (err.status !== 200) {
       displayLoginForm(true);
-      reject(res.statusText);
-    } else if (!res.error) resolve();
+      reject(err.statusText);
+    } else if (!err.error) resolve();
   });
 }
 
@@ -61,7 +62,7 @@ function sendAuthRequest(email, pass) {
       },
       body: formData
     }).then(res => {
-      handle401Error(res).then(ok => {
+      handleServerError(res).then(ok => {
         console.log('res:', res);
         res.json().then(res => {
           if (res.user && res.user.auth_token) {
@@ -116,6 +117,7 @@ function submitLoginForm() {
   sendAuthRequest(email, pass).then(() => {
     notify.success('Signed in successfully');
   }).catch(err => {
+    displayLoginForm(true);
     console.error(err);
     notify.error(err);
   });
@@ -132,7 +134,7 @@ function getUser(userId) {
       }
     }
   ).then(res => {
-    handle401Error(res).then(() => {
+    handleServerError(res).then(() => {
       res.json().then(res => {
         usernameEl.innerText = res.user.name;
         getCurrentMonthsHours();
@@ -145,6 +147,7 @@ function getUser(userId) {
       notify.error(err);
     });
   }).catch(err => {
+    displayLoginForm(true);
     console.error(err);
     notify.error(err);
   });
@@ -176,7 +179,7 @@ function getCurrentMonthsHours() {
       'App-Token': appToken
     }
   }).then(res => {
-    handle401Error(res).then(ok => {
+    handleServerError(res).then(ok => {
       res.json().then(res => {
         console.log(res);
         timeMonthEl.innerText = `${(res.organizations[0].duration*0.00027777777777778).toFixed(2)}h`;
@@ -189,6 +192,7 @@ function getCurrentMonthsHours() {
       notify.error(err);
     });
   }).catch(err => {
+    displayLoginForm(true);
     console.error(err);
     notify.error(err);
   });
