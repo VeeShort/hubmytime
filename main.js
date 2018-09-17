@@ -27,7 +27,7 @@ function init() {
 
   displayLoginForm(false);
   displayContent(false);
-  
+
   formEl = document.querySelector('#form');
   emailEl = document.querySelector('#email-inp');
   passwordEl = document.querySelector('#pass-inp');
@@ -116,6 +116,7 @@ function submitLoginForm() {
 
   sendAuthRequest(email, pass).then(() => {
     notify.success('Signed in successfully');
+    displayLoginForm(false);
   }).catch(err => {
     displayLoginForm(true);
     console.error(err);
@@ -164,7 +165,7 @@ function getCurrentMonthsHours() {
   if (currDate < payday) {
     month = currMonth > 1 ? currMonth - 1 : 12;
     year = currMonth == 1 ? currYear - 1 : currYear;
-  } 
+  }
   const startDate = `${year}-${month}-${payday + 1}`;
   const endDate = `${currYear}-${currMonth}-${currDate}`;
 
