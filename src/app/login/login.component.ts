@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { RestService } from "../services/rest.service";
 import { Router } from "@angular/router";
+import { UserService } from "../services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent {
 
   constructor(
     private rest: RestService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) { }
 
   public requestLogin(): void {
@@ -29,6 +31,11 @@ export class LoginComponent {
       this.disableSubmit = false;
       if (res && res.user && res.user.auth_token) {
         this.rest.setAuthToken(res.user.auth_token);
+        this.userService.user = {
+          id: res.user.id,
+          name: res.user.name,
+          last_activity: res.user.last_activity
+        };
         if (this.doRemember)
           localStorage.setItem('auth_token', res.user.auth_token);
         this.router.navigate(['/dashboard']);

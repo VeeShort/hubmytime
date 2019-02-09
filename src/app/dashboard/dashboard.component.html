@@ -1,5 +1,5 @@
 <mat-toolbar class="toolbar">
-  <span>Dashboard</span>
+  <span>{{ userService.user.name }}</span>
   <button mat-raised-button color="primary"
     (click)="signOut()">
     Sign Out

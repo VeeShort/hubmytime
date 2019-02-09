@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RestService } from './services/rest.service';
 import { FormsModule } from '@angular/forms';
+import { UserService } from './services/user.service';
 
 export const ROUTER_CONFIG: Routes = [
   {
@@ -43,7 +44,8 @@ export const ROUTER_CONFIG: Routes = [
     MatToolbarModule
   ],
   providers: [
-    RestService
+    RestService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })
