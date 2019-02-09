@@ -1,0 +1,22 @@
+<div class="container">
+  <mat-card class="card">
+    <mat-form-field class="field">
+      <input matInput type="email" placeholder="Email"
+        [(ngModel)]="email">
+    </mat-form-field>
+
+    <mat-form-field class="field">
+      <input matInput type="password" placeholder="Password"
+        [(ngModel)]="password">
+    </mat-form-field>
+
+    <div class="field controls">
+      <button mat-raised-button color="primary"
+        (click)="requestLogin()"
+        [disabled]="disableSubmit">Sign In</button>
+      <mat-slide-toggle [checked]="doRemember">
+        Remember me
+      </mat-slide-toggle>
+    </div>
+  </mat-card>
+</div>

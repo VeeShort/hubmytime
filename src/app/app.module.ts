@@ -1,18 +1,50 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Routes, RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatCardModule, MatSlideToggleModule, MatInputModule, MatToolbarModule } from '@angular/material';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { RestService } from './services/rest.service';
+import { FormsModule } from '@angular/forms';
+
+export const ROUTER_CONFIG: Routes = [
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent
+  }
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    RouterModule.forRoot(ROUTER_CONFIG),
+    HttpClientModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    MatButtonModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatSlideToggleModule,
+    MatToolbarModule
   ],
-  providers: [],
+  providers: [
+    RestService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

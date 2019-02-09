@@ -1,0 +1,24 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #5ebbff;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.field {
+  width: 100%;
+  &.controls {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+}
